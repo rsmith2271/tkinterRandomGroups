@@ -1,4 +1,6 @@
+import random
 from tkinter import *
+from tkinter import messagebox
 
 class GUI:
 
@@ -60,34 +62,50 @@ class GUI:
         self.btn.place(x=20, y=500)
 
     def generate_groups(self):
-        name_list=[]
+        self.name_list=[]
         if self.chk_state1.get()==TRUE:
-            name_list.append("Butch")
+            self.name_list.append("Butch")
         if self.chk_state2.get()==TRUE:
-            name_list.append("Little Ron")
+            self.name_list.append("Little Ron")
         if self.chk_state3.get()==TRUE:
-            name_list.append("Faffer Yates")
+            self.name_list.append("Faffer Yates")
         if self.chk_state4.get()==TRUE:
-            name_list.append("El Gringo")
+            self.name_list.append("El Gringo")
         if self.chk_state5.get()==TRUE:
-            name_list.append("Riggers")
+            self.name_list.append("Riggers")
         if self.chk_state6.get()==TRUE:
-            name_list.append("NR Man")
+            self.name_list.append("NR Man")
         if self.chk_state7.get()==TRUE:
-            name_list.append("Judith Chalmers")
+            self.name_list.append("Judith Chalmers")
         if self.chk_state8.get()==TRUE:
-            name_list.append("Speedy Gonzalez")
-        print(name_list)
+            self.name_list.append("Speedy Gonzalez")
+        #print(name_list)
 
         match self.rbvar.get():
             case 1:
-                print("Pairs")
+                if len(self.name_list) < 2:
+                    messagebox.showinfo("Pairs", "Not enough players selected")
+                else:
+                    pass
             case 2:
-                print("Trios")
+                if len(self.name_list) < 3:
+                    messagebox.showinfo("Trios", "Not enough players selected")
             case 3:
-                print("Quads")
+                if len(self.name_list) < 4:
+                    messagebox.showinfo("Quads", "Not enough players selected")
             case 4:
-                print("Sevens")
+                if len(self.name_list) != 7:
+                    messagebox.showinfo("Seven", "Incorrect number of players selected")
+            case _:
+                pass
+
+def generate_name_pairs(names) -> list:
+    pairs = []
+    random.shuffle(names)
+    for i in range(0, len(names), 2):
+        if i + 1 < len(names):
+            pairs.append((names[i], names[i + 1]))
+    return pairs
 
 def main():
     window=Tk()
