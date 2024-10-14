@@ -86,16 +86,30 @@ class GUI:
                 if len(self.name_list) < 2:
                     messagebox.showinfo("Pairs", "Not enough players selected")
                 else:
-                    pass
+                    random.shuffle(self.name_list)
+                    pairs = [(self.name_list[i], self.name_list[i + 1]) for i in range(0, len(self.name_list) - 1, 2)]
+                    print("The pairs are: ", pairs)
+                    i=1
+                    for pair in pairs:
+                        print(f"{i}. {pair[0]} - {pair[1]}")
+                        i += 1
+                    if len(self.name_list) % 2 != 0:
+                        print(f"{i}. {self.name_list[-1]}")
             case 2:
                 if len(self.name_list) < 3:
                     messagebox.showinfo("Trios", "Not enough players selected")
+                else:
+                    pass
             case 3:
                 if len(self.name_list) < 4:
                     messagebox.showinfo("Quads", "Not enough players selected")
+                else:
+                    pass
             case 4:
                 if len(self.name_list) != 7:
                     messagebox.showinfo("Seven", "Incorrect number of players selected")
+                else:
+                    pass
             case _:
                 pass
 

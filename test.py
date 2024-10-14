@@ -1,18 +1,18 @@
-from tkinter import *  
+def split_into_pairs(lst):
+    # Create pairs using list comprehension
+    pairs = [(lst[i], lst[i + 1]) for i in range(0, len(lst) - 1, 2)]
+    
+    # Check if the list has an odd number of elements
+    if len(lst) % 2 != 0:
+        # Add the last element as a single pair
+        pairs.append((lst[-1],))
+    
+    return pairs
 
-def printResults():
-    print(var1.get())
-
-a=Tk()  
-a.geometry("400x400")  
-a.title("test")    
-  
-Label(a, text="Select your country of birth: ").pack(anchor='w')
-
-var1 = StringVar(a, "USA")  # Create a variable for strings, and initialize the variable
-Radiobutton(a, text="USA", variable=var1, value="USA", command=printResults).pack(anchor='w')
-Radiobutton(a, text="France", variable=var1, value="France", command=printResults).pack(anchor='w')
-Radiobutton(a, text="Germany", variable=var1, value="Germany", command=printResults).pack(anchor='w')
-Radiobutton(a, text="China", variable=var1, value="China", command=printResults).pack(anchor='w')
-
-a.mainloop()  
+# Example usage
+my_list = [1, 2, 3, 4, 5]
+pairs = split_into_pairs(my_list)
+i=1
+for pair in pairs:
+        print(f"{i}. {pair[0]} - {pair[1]}")
+        i += 1
