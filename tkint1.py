@@ -62,6 +62,8 @@ class GUI:
         self.btn.place(x=20, y=500)
 
     def generate_groups(self):
+        
+
         self.name_list=[]
         if self.chk_state1.get()==TRUE:
             self.name_list.append("Butch")
@@ -86,15 +88,23 @@ class GUI:
                 if len(self.name_list) < 2:
                     messagebox.showinfo("Pairs", "Not enough players selected")
                 else:
+                    self.lbl3=Label(self.window, text= "The pairs are:", font=("Arial Bold", 16))
+                    self.lbl3.place(x=20, y=575)
+
                     random.shuffle(self.name_list)
-                    pairs = [(self.name_list[i], self.name_list[i + 1]) for i in range(0, len(self.name_list) - 1, 2)]
-                    print("The pairs are: ", pairs)
+                    self.pairs = [(self.name_list[i], self.name_list[i + 1]) for i in range(0, len(self.name_list) - 1, 2)]
+                    print(self.pairs)
                     i=1
-                    for pair in pairs:
-                        print(f"{i}. {pair[0]} - {pair[1]}")
+                    ycoord=625
+                    for pair in self.pairs:
+                        self.lbl4=Label(self.window, text=f"{i}. {pair[0]} & {pair[1]}", font=("Arial Bold", 14))
+                        self.lbl4.place(x=20, y=ycoord)
                         i += 1
+                        ycoord+= 25
                     if len(self.name_list) % 2 != 0:
-                        print(f"{i}. {self.name_list[-1]}")
+                        self.lbl5=Label(self.window, text=f"{i}. {self.name_list[-1]}", font=("Arial Bold", 14))
+                        self.lbl5.place(x=20, y=ycoord)
+            
             case 2:
                 if len(self.name_list) < 3:
                     messagebox.showinfo("Trios", "Not enough players selected")
