@@ -44,8 +44,8 @@ class Login_Window:
                 #print("Login successful!")
 
                 # You can now use `session` to access pages that require login 
-                protected_url = 'https://www.heskethgolfclub.co.uk/whshcaprecord.php?playerid=1003133540'  # Replace with a protected URL 
-                protected_response = session.get(protected_url) 
+                self.protected_url = 'https://www.heskethgolfclub.co.uk/whshcaprecord.php?playerid=1003133540'  # Replace with a protected URL 
+                protected_response = session.get(self.protected_url) 
          
                 if protected_response.ok:
                     pass
