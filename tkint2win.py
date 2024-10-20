@@ -1,14 +1,75 @@
 import random
 from tkinter import *
 from tkinter import messagebox
+import requests
+from bs4 import BeautifulSoup
+import json
 
 class Login_Window:
     def __init__(self, master):
         self.master = master
         master.title("Login")
-        master.geometry("800x800")
-        self.button = Button(master, text="Login", font = ("Arial Bold", 20), command=self.open_second_window)
-        self.button.place(x=50, y=50)
+        master.geometry("450x400")
+
+        self.lbl1=Label(master, text="HGC Login Details:", font = ("Arial Bold", 14))
+        self.lbl1.place(x=145, y=25)
+        self.lbl2=Label(master, text="User Number: ", font = ("Arial Bold", 14))
+        self.lbl2.place(x=50, y=100)
+        self.user=Entry(master, width=4, font = ("Arial Bold", 14))
+        self.user.place(x=200, y=100)
+        self.lbl3=Label(master, text="PIN: ", font = ("Arial Bold", 14))
+        self.lbl3.place(x=50, y=150)
+        bullet = "\u2022" #specifies bullet character
+        self.pin=Entry(master, width=4, show=bullet, font = ("Arial Bold", 14))
+        self.pin.place(x=200, y=150)
+
+        self.button=Button(master, text="Login", font = ("Arial Bold", 20), command=self.loginHGC)
+        self.button.place(x=170, y=200)
+    
+    def loginHGC(self):
+        # Define the URL for the login form and the payload
+        self.user_input=self.user.get()
+        self.user_pin=self.pin.get()
+        
+        login_url = 'https://www.heskethgolfclub.co.uk/login.php'  # login URL 
+        payload = {'memberid': self.user_input, 'pin': self.user_pin} 
+                
+        # Start a session 
+        with requests.Session() as session: 
+            # Send a POST request to log in 
+            response = session.post(login_url, data=payload) 
+        
+            # Check if login was successful (actually a 200 response from the server, not a proper login check)
+            if response.ok: 
+                #print("Login successful!")
+
+                # You can now use `session` to access pages that require login 
+                protected_url = 'https://www.heskethgolfclub.co.uk/whshcaprecord.php?playerid=1003133540'  # Replace with a protected URL 
+                protected_response = session.get(protected_url) 
+         
+                if protected_response.ok:
+                    pass
+                    #print(f"Accessed protected page!") 
+                    # Do something with the protected page content 
+                    #print(protected_response.text) 
+                else: 
+                    print("Failed to access protected page.") 
+            else: 
+                print("Login failed.")
+
+            soup = BeautifulSoup(protected_response.content, 'html.parser')
+
+            # Find all the text elements (e.g., paragraphs, headings, etc.) you want to scrape
+            text_elements = soup.find_all(['p'])
+
+            # Extract the text from each element and concatenate them into a single string
+            scraped_text = ' '.join(element.get_text() for element in text_elements)
+                        
+            hcap_index = scraped_text.find("Current Handicap Index: ")
+            #print(scraped_text[hcap_index+24:hcap_index+28])
+            self.current_handicap1003133540=scraped_text[hcap_index+24:hcap_index+28]
+            print(f"Current Index: {self.current_handicap1003133540}")
+            self.open_second_window()
 
     def open_second_window(self):
         self.master.destroy()
@@ -19,7 +80,7 @@ class GUI:
 
     def __init__(self, window):
         self.window=window
-        window.title("Random Group Generator for the Golf Buddies (By Rob Smith)")
+        window.title("Random Group Generator")
         window.geometry("1000x800")
 
         self.lbl1=Label(window, text="Who is Playing:", font = ("Arial Bold", 20))
@@ -41,9 +102,9 @@ class GUI:
         self.chk_state7.set(False)
         self.chk_state8=BooleanVar()
         self.chk_state8.set(False)
-        self.chk1=Checkbutton(window, text="Butch", font=("Arial", 14), var=self.chk_state1)
+        self.chk1=Checkbutton(window, text=f"Butch", font=("Arial", 14), var=self.chk_state1)
         self.chk2=Checkbutton(window, text="Little Ron", font=("Arial", 14), var=self.chk_state2)
-        self.chk3=Checkbutton(window, text="Faffer Yates", font=("Arial", 14), var=self.chk_state3)
+        self.chk3=Checkbutton(window, text="Statto", font=("Arial", 14), var=self.chk_state3)
         self.chk4=Checkbutton(window, text="El Gringo", font=("Arial", 14), var=self.chk_state4)
         self.chk5=Checkbutton(window, text="Riggers", font=("Arial", 14), var=self.chk_state5)
         self.chk6=Checkbutton(window, text="Lloydy", font=("Arial", 14), var=self.chk_state6)
@@ -86,7 +147,7 @@ class GUI:
         if self.chk_state2.get()==TRUE:
             self.name_list.append("Little Ron")
         if self.chk_state3.get()==TRUE:
-            self.name_list.append("Faffer Yates")
+            self.name_list.append("Statto")
         if self.chk_state4.get()==TRUE:
             self.name_list.append("El Gringo")
         if self.chk_state5.get()==TRUE:
@@ -198,14 +259,6 @@ class GUI:
                     self.lbl18.place(x=20, y=675)
             case _:
                 pass
-
-def generate_name_pairs(names) -> list:
-    pairs = []
-    random.shuffle(names)
-    for i in range(0, len(names), 2):
-        if i + 1 < len(names):
-            pairs.append((names[i], names[i + 1]))
-    return pairs
 
 def main():
     master=Tk()
