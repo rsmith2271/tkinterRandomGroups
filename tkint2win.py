@@ -2,6 +2,19 @@ import random
 from tkinter import *
 from tkinter import messagebox
 
+class Login_Window:
+    def __init__(self, master):
+        self.master = master
+        master.title("Login")
+        master.geometry("800x800")
+        self.button = Button(master, text="Login", font = ("Arial Bold", 20), command=self.open_second_window)
+        self.button.place(x=50, y=50)
+
+    def open_second_window(self):
+        self.master.destroy()
+        window = Tk()
+        GUI(window)
+
 class GUI:
 
     def __init__(self, window):
@@ -195,9 +208,9 @@ def generate_name_pairs(names) -> list:
     return pairs
 
 def main():
-    window=Tk()
-    main_gui = GUI(window)
-    window.mainloop()
+    master=Tk()
+    main_gui = Login_Window(master)
+    master.mainloop()
 
 if __name__ == "__main__":
     main()

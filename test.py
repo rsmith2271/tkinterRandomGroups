@@ -1,8 +1,28 @@
-def split_list_in_threes(lst):
-    # Use a list comprehension to create chunks of size 3
-    return [lst[i:i + 3] for i in range(0, len(lst), 3)]
+import tkinter as tk
 
-# Example usage
-my_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-chunks = split_list_in_threes(my_list)
-print(chunks)
+class FirstWindow:
+    def __init__(self, master):
+        self.master = master
+        master.title("First Window")
+        master.geometry("300x200")
+        self.button = tk.Button(master, text="Open Second Window", command=self.open_second_window)
+        self.button.pack()
+
+    def open_second_window(self):
+        self.master.destroy()
+        second_window = tk.Tk()
+        SecondWindow(second_window)
+
+class SecondWindow:
+    def __init__(self, master):
+        self.master = master
+        master.title("Second Window")
+        master.geometry("300x200")
+        self.label = tk.Label(master, text="Welcome to the second window!")
+        self.label.pack()
+        master.mainloop()
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = FirstWindow(root)
+    root.mainloop()
