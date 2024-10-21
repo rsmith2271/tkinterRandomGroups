@@ -3,7 +3,6 @@ from tkinter import *
 from tkinter import messagebox
 import requests
 from bs4 import BeautifulSoup
-import json
 
 class Login_Window:
     def __init__(self, master):
