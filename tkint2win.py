@@ -32,52 +32,55 @@ class Login_Window:
         
         login_url = 'https://www.heskethgolfclub.co.uk/login.php'  # login URL 
         payload = {'memberid': self.user_input, 'pin': self.user_pin} 
-                
+
+        self.handicap_list=[]
         # Start a session 
         with requests.Session() as session: 
             # Send a POST request to log in 
             response = session.post(login_url, data=payload) 
         
             # Check if login was successful (actually a 200 response from the server, not a proper login check)
-            if response.ok: 
-                #print("Login successful!")
+            cdh_list=[1003133540, 1007201368, 1012673068, 1004511710, 1013191007, 1000396043, 1012782936, 1001078566]
+            for item in cdh_list:
+                if response.ok: 
+                    #print("Login successful!")
 
-                # You can now use `session` to access pages that require login 
-                self.protected_url = 'https://www.heskethgolfclub.co.uk/whshcaprecord.php?playerid=1003133540'  # Replace with a protected URL 
-                protected_response = session.get(self.protected_url) 
-         
-                if protected_response.ok:
-                    pass
-                    #print(f"Accessed protected page!") 
-                    # Do something with the protected page content 
-                    #print(protected_response.text) 
+                    # You can now use `session` to access pages that require login 
+                    self.protected_url = f"https://www.heskethgolfclub.co.uk/whshcaprecord.php?playerid= {item}"  # Replace with a protected URL 
+                    protected_response = session.get(self.protected_url) 
+            
+                    if protected_response.ok:
+                        pass
+                        #print(f"Accessed protected page!") 
+                        # Do something with the protected page content 
+                        #print(protected_response.text) 
+                    else: 
+                        print("Failed to access protected page.") 
                 else: 
-                    print("Failed to access protected page.") 
-            else: 
-                print("Login failed.")
+                    print("Login failed.")
 
-            soup = BeautifulSoup(protected_response.content, 'html.parser')
+                soup = BeautifulSoup(protected_response.content, 'html.parser')
 
-            # Find all the text elements (e.g., paragraphs, headings, etc.) you want to scrape
-            text_elements = soup.find_all(['p'])
+                # Find all the text elements (e.g., paragraphs, headings, etc.) you want to scrape
+                text_elements = soup.find_all(['p'])
 
-            # Extract the text from each element and concatenate them into a single string
-            scraped_text = ' '.join(element.get_text() for element in text_elements)
-                        
-            hcap_index = scraped_text.find("Current Handicap Index: ")
-            #print(scraped_text[hcap_index+24:hcap_index+28])
-            self.current_handicap1003133540=scraped_text[hcap_index+24:hcap_index+28]
-            print(f"Current Index: {self.current_handicap1003133540}")
+                # Extract the text from each element and concatenate them into a single string
+                scraped_text = ' '.join(element.get_text() for element in text_elements)
+                            
+                hcap_index = scraped_text.find("Current Handicap Index: ")
+                self.current_handicap=scraped_text[hcap_index+24:hcap_index+28]
+                self.handicap_list.append(self.current_handicap)
+
             self.open_second_window()
 
     def open_second_window(self):
         self.master.destroy()
         window = Tk()
-        GUI(window)
+        GUI(window, self.handicap_list)
 
 class GUI:
 
-    def __init__(self, window):
+    def __init__(self, window, handicap_list):
         self.window=window
         window.title("Random Group Generator")
         window.geometry("1000x800")
@@ -101,14 +104,14 @@ class GUI:
         self.chk_state7.set(False)
         self.chk_state8=BooleanVar()
         self.chk_state8.set(False)
-        self.chk1=Checkbutton(window, text=f"Butch", font=("Arial", 14), var=self.chk_state1)
-        self.chk2=Checkbutton(window, text="Little Ron", font=("Arial", 14), var=self.chk_state2)
-        self.chk3=Checkbutton(window, text="Statto", font=("Arial", 14), var=self.chk_state3)
-        self.chk4=Checkbutton(window, text="El Gringo", font=("Arial", 14), var=self.chk_state4)
-        self.chk5=Checkbutton(window, text="Riggers", font=("Arial", 14), var=self.chk_state5)
-        self.chk6=Checkbutton(window, text="Lloydy", font=("Arial", 14), var=self.chk_state6)
-        self.chk7=Checkbutton(window, text="Judith Chalmers", font=("Arial", 14), var=self.chk_state7)
-        self.chk8=Checkbutton(window, text="Speedy Gonzalez", font=("Arial", 14), var=self.chk_state8)
+        self.chk1=Checkbutton(window, text=f"Butch (H.I.: {handicap_list[0]})", font=("Arial", 14), var=self.chk_state1)
+        self.chk2=Checkbutton(window, text=f"Little Ron (H.I.: {handicap_list[1]})", font=("Arial", 14), var=self.chk_state2)
+        self.chk3=Checkbutton(window, text=f"Statto (H.I.: {handicap_list[2]})", font=("Arial", 14), var=self.chk_state3)
+        self.chk4=Checkbutton(window, text=f"El Gringo (H.I.: {handicap_list[3]})", font=("Arial", 14), var=self.chk_state4)
+        self.chk5=Checkbutton(window, text=f"Riggers (H.I.: {handicap_list[4]})", font=("Arial", 14), var=self.chk_state5)
+        self.chk6=Checkbutton(window, text=f"Lloydy (H.I.: {handicap_list[5]})", font=("Arial", 14), var=self.chk_state6)
+        self.chk7=Checkbutton(window, text=f"Judith Chalmers (H.I.: {handicap_list[6]})", font=("Arial", 14), var=self.chk_state7)
+        self.chk8=Checkbutton(window, text=f"Speedy Gonzalez (H.I.: {handicap_list[7]})", font=("Arial", 14), var=self.chk_state8)
         self.chk1.place(x=20, y=75)
         self.chk2.place(x=20, y=125)
         self.chk3.place(x=20, y=175)
