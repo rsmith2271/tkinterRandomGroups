@@ -80,29 +80,30 @@ class MainApp(tk.Tk):
             scraped_text = ' '.join(element.get_text() for element in text_elements)
                         
             hcap_index = scraped_text.find("Current Handicap Index: ")
-            #print(scraped_text[hcap_index+24:hcap_index+28])
-            self.current_handicap1003133540=tk.scraped_text[hcap_index+24:hcap_index+28]
+            self.current_handicap1003133540=scraped_text[hcap_index+24:hcap_index+28]
             print(f"Current Index: {self.current_handicap1003133540}")
             self.open_second_window()
 
             # Variable to be used in the second window
             #self.shared_variable = tk.StringVar(value="Hello from Main Window")
     
+    def open_second_window(self):
+        SecondWindow(self)
 
 class SecondWindow(tk.Toplevel):
     def __init__(self, master):
         super().__init__(master)
-        self.title("Second Window")
-        self.geometry("300x200")
+        self.title(f"Second Window {master.current_handicap1003133540}")
+        self.geometry("300x300")
 
         # Access the shared variable from the main window
-        #self.label = tk.Label(self, textvariable=master.shared_variable)
-        self.label = tk.Label(self, textvariable=master.current_handicap1003133540)
-        self.label.pack(pady=20)
+        #self.label = Label(self, textvariable=master.current_handicap1003133540)
+        self.lbl1=Label(self, text=f"Handicap Index: {master.current_handicap1003133540}", font = ("Arial Bold", 14))
+        self.lbl1.pack(pady=20)
 
         # Entry to update the shared variable
-        self.entry = tk.Entry(self, textvariable=master.shared_variable)
-        self.entry.pack(pady=20)
+        #self.entry = tk.Entry(self, textvariable=master.current_handicap1003133540)
+        #self.entry.pack(pady=20)
 
 if __name__ == "__main__":
     app = MainApp()
