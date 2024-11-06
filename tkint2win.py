@@ -1,11 +1,11 @@
 import random
-from tkinter import *
+from tkinter import * # type: ignore
 from tkinter import messagebox
 import requests
 from bs4 import BeautifulSoup
 
 class Login_Window:
-    def __init__(self, master):
+    def __init__(self, master) -> None:
         self.master = master
         master.title("Login")
         master.geometry("450x400")
@@ -25,13 +25,13 @@ class Login_Window:
         self.button=Button(master, text="Login", font = ("Arial Bold", 20), command=self.loginHGC)
         self.button.place(x=170, y=200)
     
-    def loginHGC(self):
+    def loginHGC(self) -> None:
         # Define the URL for the login form and the payload
-        self.user_input=self.user.get()
-        self.user_pin=self.pin.get()
+        self.user_input: str=self.user.get()
+        self.user_pin: str=self.pin.get()
         
         login_url = 'https://www.heskethgolfclub.co.uk/login.php'  # login URL 
-        payload = {'memberid': self.user_input, 'pin': self.user_pin} 
+        payload: dict[str, str] = {'memberid': self.user_input, 'pin': self.user_pin} 
 
         self.handicap_list=[]
         # Start a session 
@@ -47,9 +47,9 @@ class Login_Window:
 
                     # You can now use `session` to access pages that require login 
                     self.protected_url = f"https://www.heskethgolfclub.co.uk/whshcaprecord.php?playerid= {item}"  # Replace with a protected URL 
-                    protected_response = session.get(self.protected_url) 
+                    self.protected_response = session.get(self.protected_url) 
             
-                    if protected_response.ok:
+                    if self.protected_response.ok:
                         pass
                         #print(f"Accessed protected page!") 
                         # Do something with the protected page content 
@@ -59,7 +59,7 @@ class Login_Window:
                 else: 
                     print("Login failed.")
 
-                soup = BeautifulSoup(protected_response.content, 'html.parser')
+                soup = BeautifulSoup(self.protected_response.content, 'html.parser')
 
                 # Find all the text elements (e.g., paragraphs, headings, etc.) you want to scrape
                 text_elements = soup.find_all(['p'])
@@ -73,14 +73,14 @@ class Login_Window:
 
             self.open_second_window()
 
-    def open_second_window(self):
+    def open_second_window(self) -> None:
         self.master.destroy()
         window = Tk()
         GUI(window, self.handicap_list)
 
 class GUI:
 
-    def __init__(self, window, handicap_list):
+    def __init__(self, window, handicap_list) -> None:
         self.window=window
         window.title("Random Group Generator")
         window.geometry("1000x800")
@@ -104,14 +104,14 @@ class GUI:
         self.chk_state7.set(False)
         self.chk_state8=BooleanVar()
         self.chk_state8.set(False)
-        self.chk1=Checkbutton(window, text=f"Butch (H.I.: {handicap_list[0]})", font=("Arial", 14), var=self.chk_state1)
-        self.chk2=Checkbutton(window, text=f"Little Ron (H.I.: {handicap_list[1]})", font=("Arial", 14), var=self.chk_state2)
-        self.chk3=Checkbutton(window, text=f"Statto (H.I.: {handicap_list[2]})", font=("Arial", 14), var=self.chk_state3)
-        self.chk4=Checkbutton(window, text=f"El Gringo (H.I.: {handicap_list[3]})", font=("Arial", 14), var=self.chk_state4)
-        self.chk5=Checkbutton(window, text=f"Riggers (H.I.: {handicap_list[4]})", font=("Arial", 14), var=self.chk_state5)
-        self.chk6=Checkbutton(window, text=f"Lloydy (H.I.: {handicap_list[5]})", font=("Arial", 14), var=self.chk_state6)
-        self.chk7=Checkbutton(window, text=f"Judith Chalmers (H.I.: {handicap_list[6]})", font=("Arial", 14), var=self.chk_state7)
-        self.chk8=Checkbutton(window, text=f"Speedy Gonzalez (H.I.: {handicap_list[7]})", font=("Arial", 14), var=self.chk_state8)
+        self.chk1=Checkbutton(window, text=f"Butch (H.I.: {handicap_list[0]})", font=("Arial", 14), var=self.chk_state1) # type: ignore
+        self.chk2=Checkbutton(window, text=f"Little Ron (H.I.: {handicap_list[1]})", font=("Arial", 14), var=self.chk_state2) # type: ignore
+        self.chk3=Checkbutton(window, text=f"Statto (H.I.: {handicap_list[2]})", font=("Arial", 14), var=self.chk_state3) # type: ignore
+        self.chk4=Checkbutton(window, text=f"El Gringo (H.I.: {handicap_list[3]})", font=("Arial", 14), var=self.chk_state4) # type: ignore
+        self.chk5=Checkbutton(window, text=f"Riggers (H.I.: {handicap_list[4]})", font=("Arial", 14), var=self.chk_state5) # type: ignore
+        self.chk6=Checkbutton(window, text=f"Lloydy (H.I.: {handicap_list[5]})", font=("Arial", 14), var=self.chk_state6) # type: ignore
+        self.chk7=Checkbutton(window, text=f"Judith Chalmers (H.I.: {handicap_list[6]})", font=("Arial", 14), var=self.chk_state7) # type: ignore
+        self.chk8=Checkbutton(window, text=f"Speedy Gonzalez (H.I.: {handicap_list[7]})", font=("Arial", 14), var=self.chk_state8) # type: ignore
         self.chk1.place(x=20, y=75)
         self.chk2.place(x=20, y=125)
         self.chk3.place(x=20, y=175)
@@ -137,7 +137,7 @@ class GUI:
         self.btn=Button(window, text="Press to Generate Groups", font=("Arial Bold", 16), command=self.generate_groups)
         self.btn.place(x=20, y=500)
 
-    def generate_groups(self):
+    def generate_groups(self) -> None:
         if self.rbvar.get() ==0:
             messagebox.showinfo("Dickhead", "No group selected!")
         if self.chk_state1.get()==FALSE & self.chk_state2.get()==FALSE & self.chk_state3.get()==FALSE & self.chk_state4.get()==FALSE & self.chk_state5.get()==FALSE & self.chk_state6.get()==FALSE & self.chk_state7.get()==FALSE & self.chk_state8.get()==FALSE:
@@ -201,7 +201,7 @@ class GUI:
                         self.lbl7.place(x=20, y=ycoord)
                         i += 1
                         ycoord+= 25
-                    div3 = len(self.name_list)%3
+                    div3: int = len(self.name_list)%3
                     match div3:
                         case 1:
                             self.lbl8=Label(self.window, text=f"{i}. {self.name_list[-1]} is on his own", font=("Arial Bold", 14))
@@ -229,7 +229,7 @@ class GUI:
                         self.lbl11.place(x=20, y=ycoord)
                         i += 1
                         ycoord+= 25
-                    div4 = len(self.name_list)%4
+                    div4: int = len(self.name_list)%4
                     match div4:
                         case 1:
                             self.lbl12=Label(self.window, text=f"{i}. {self.name_list[-1]} is on his own", font=("Arial Bold", 14))
@@ -262,7 +262,7 @@ class GUI:
             case _:
                 pass
 
-def main():
+def main() -> None:
     master=Tk()
     main_gui = Login_Window(master)
     master.mainloop()
