@@ -104,14 +104,14 @@ class GUI:
         self.chk_state7.set(False)
         self.chk_state8=BooleanVar()
         self.chk_state8.set(False)
-        self.chk1=Checkbutton(window, text=f"Butch (H.I.: {handicap_list[0]})", font=("Arial", 14), var=self.chk_state1) # type: ignore
-        self.chk2=Checkbutton(window, text=f"Little Ron (H.I.: {handicap_list[1]})", font=("Arial", 14), var=self.chk_state2) # type: ignore
-        self.chk3=Checkbutton(window, text=f"Statto (H.I.: {handicap_list[2]})", font=("Arial", 14), var=self.chk_state3) # type: ignore
-        self.chk4=Checkbutton(window, text=f"El Gringo (H.I.: {handicap_list[3]})", font=("Arial", 14), var=self.chk_state4) # type: ignore
-        self.chk5=Checkbutton(window, text=f"Riggers (H.I.: {handicap_list[4]})", font=("Arial", 14), var=self.chk_state5) # type: ignore
-        self.chk6=Checkbutton(window, text=f"Lloydy (H.I.: {handicap_list[5]})", font=("Arial", 14), var=self.chk_state6) # type: ignore
-        self.chk7=Checkbutton(window, text=f"Judith Chalmers (H.I.: {handicap_list[6]})", font=("Arial", 14), var=self.chk_state7) # type: ignore
-        self.chk8=Checkbutton(window, text=f"Speedy Gonzalez (H.I.: {handicap_list[7]})", font=("Arial", 14), var=self.chk_state8) # type: ignore
+        self.chk1=Checkbutton(window, text=f"Rob Smith (H.I.: {handicap_list[0]})", font=("Arial", 14), var=self.chk_state1) # type: ignore
+        self.chk2=Checkbutton(window, text=f"Rob Smallman (H.I.: {handicap_list[1]})", font=("Arial", 14), var=self.chk_state2) # type: ignore
+        self.chk3=Checkbutton(window, text=f"Richard (H.I.: {handicap_list[2]})", font=("Arial", 14), var=self.chk_state3) # type: ignore
+        self.chk4=Checkbutton(window, text=f"Brian (H.I.: {handicap_list[3]})", font=("Arial", 14), var=self.chk_state4) # type: ignore
+        self.chk5=Checkbutton(window, text=f"Ian (H.I.: {handicap_list[4]})", font=("Arial", 14), var=self.chk_state5) # type: ignore
+        self.chk6=Checkbutton(window, text=f"Steve (H.I.: {handicap_list[5]})", font=("Arial", 14), var=self.chk_state6) # type: ignore
+        self.chk7=Checkbutton(window, text=f"Kev (H.I.: {handicap_list[6]})", font=("Arial", 14), var=self.chk_state7) # type: ignore
+        self.chk8=Checkbutton(window, text=f"Si (H.I.: {handicap_list[7]})", font=("Arial", 14), var=self.chk_state8) # type: ignore
         self.chk1.place(x=20, y=75)
         self.chk2.place(x=20, y=125)
         self.chk3.place(x=20, y=175)
@@ -139,27 +139,27 @@ class GUI:
 
     def generate_groups(self) -> None:
         if self.rbvar.get() ==0:
-            messagebox.showinfo("Dickhead", "No group selected!")
+            messagebox.showinfo("There's an issue!", "No group selected!")
         if self.chk_state1.get()==FALSE & self.chk_state2.get()==FALSE & self.chk_state3.get()==FALSE & self.chk_state4.get()==FALSE & self.chk_state5.get()==FALSE & self.chk_state6.get()==FALSE & self.chk_state7.get()==FALSE & self.chk_state8.get()==FALSE:
-            messagebox.showinfo("Dickhead", "No names selected!")
+            messagebox.showinfo("There's an issue!", "No names selected!")
 
         self.name_list=[]
         if self.chk_state1.get()==TRUE:
-            self.name_list.append("Butch")
+            self.name_list.append("Rob Smith")
         if self.chk_state2.get()==TRUE:
-            self.name_list.append("Little Ron")
+            self.name_list.append("Rob Smallman")
         if self.chk_state3.get()==TRUE:
-            self.name_list.append("Statto")
+            self.name_list.append("Richard")
         if self.chk_state4.get()==TRUE:
-            self.name_list.append("El Gringo")
+            self.name_list.append("Brian")
         if self.chk_state5.get()==TRUE:
-            self.name_list.append("Riggers")
+            self.name_list.append("Ian")
         if self.chk_state6.get()==TRUE:
-            self.name_list.append("Lloydy")
+            self.name_list.append("Steve")
         if self.chk_state7.get()==TRUE:
-            self.name_list.append("Judith Chalmers")
+            self.name_list.append("Kev")
         if self.chk_state8.get()==TRUE:
-            self.name_list.append("Speedy Gonzalez")
+            self.name_list.append("Si")
         #print(name_list)
 
         match self.rbvar.get():
